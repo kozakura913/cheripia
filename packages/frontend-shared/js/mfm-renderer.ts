@@ -69,6 +69,8 @@ export type MfmRendererConfig = {
 		Search?: Component;
 		/** 省略時は sparkle を無視して子要素のみ描画する */
 		Sparkle?: Component;
+		/** 省略時は `<code>` で数式をそのまま描画する */
+		Math?: Component;
 	};
 	/** 描画のたびに呼ばれる (設定の変更をリアクティブに反映するため) 。省略時はすべて有効 */
 	getOptions?: () => {
@@ -93,7 +95,7 @@ export function createMfmRenderer<P extends MfmBaseProps = MfmBaseProps>(config:
 		//provide('linkNavigationBehavior', props.linkNavigationBehavior);
 
 		const props = _props as P & MfmOptionalProps;
-		const { Url, Link, Mention, A, Time, Emoji, CustomEmoji, Code, CodeInline, Search, Sparkle } = config.components();
+		const { Url, Link, Mention, A, Time, Emoji, CustomEmoji, Code, CodeInline, Search, Sparkle, Math: MathComponent } = config.components();
 
 		const isNote = props.isNote ?? true;
 		const shouldNyaize = props.nyaize ? props.nyaize === 'respect' ? props.author?.isCat : false : false;
@@ -278,6 +280,15 @@ export function createMfmRenderer<P extends MfmBaseProps = MfmBaseProps>(config:
 						case 'rotate': {
 							const degrees = safeParseFloat(token.props.args.deg) ?? 90;
 							style = `transform: rotate(${degrees}deg); transform-origin: center center;`;
+							break;
+						}
+						case 'fade': {
+							if (!useAnim) {
+								return genEl(token.children, scale);
+							}
+							const speed = validTime(token.props.args.speed) ?? '4s';
+							const delay = validTime(token.props.args.delay) ?? '0s';
+							style = `animation: mfm-fade ${speed} linear infinite; animation-delay: ${delay};`;
 							break;
 						}
 						case 'position': {
@@ -506,11 +517,25 @@ export function createMfmRenderer<P extends MfmBaseProps = MfmBaseProps>(config:
 				}
 
 				case 'mathInline': {
-					return [h('code', token.props.formula)];
+					if (MathComponent == null) {
+						return [h('code', token.props.formula)];
+					}
+					return [h(MathComponent, {
+						key: Math.random(),
+						formula: token.props.formula,
+						displayMode: false,
+					})];
 				}
 
 				case 'mathBlock': {
-					return [h('code', token.props.formula)];
+					if (MathComponent == null) {
+						return [h('code', token.props.formula)];
+					}
+					return [h(MathComponent, {
+						key: Math.random(),
+						formula: token.props.formula,
+						displayMode: true,
+					})];
 				}
 
 				case 'search': {

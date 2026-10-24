@@ -4,13 +4,7 @@
  */
 
 import { createMfmRenderer } from '@@/js/mfm-renderer.js';
-import { h } from 'vue';
-import * as mfm from 'mfc-js';
-import * as Misskey from 'misskey-js';
-import temml from 'temml/dist/temml.mjs';
-import { host } from '@@/js/config.js';
 import type { MfmBaseProps } from '@@/js/mfm-renderer.js';
-import type { VNode, SetupContext } from 'vue';
 import type { MkABehavior } from '@/components/global/MkA.vue';
 import MkUrl from '@/components/global/MkUrl.vue';
 import MkTime from '@/components/global/MkTime.vue';
@@ -22,6 +16,7 @@ import MkCode from '@/components/MkCode.vue';
 import MkCodeInline from '@/components/MkCodeInline.vue';
 import MkGoogle from '@/components/MkGoogle.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
+import MkMath from '@/components/MkMath.vue';
 import MkA from '@/components/global/MkA.vue';
 import { prefer } from '@/preferences.js';
 
@@ -29,10 +24,6 @@ type MfmProps = MfmBaseProps & {
 	enableEmojiMenu?: boolean;
 	enableEmojiMenuReaction?: boolean;
 	linkNavigationBehavior?: MkABehavior;
-};
-
-type MfmEvents = {
-	clickEv(id: string): void;
 };
 
 // eslint-disable-next-line import/no-default-export
@@ -49,6 +40,7 @@ export default createMfmRenderer<MfmProps>({
 		CodeInline: MkCodeInline,
 		Search: MkGoogle,
 		Sparkle: MkSparkle,
+		Math: MkMath,
 	}),
 	getOptions: () => ({
 		advancedMfm: prefer.s.advancedMfm,

@@ -11,6 +11,7 @@ import EmMention from '@/components/EmMention.vue';
 import EmEmoji from '@/components/EmEmoji.vue';
 import EmCustomEmoji from '@/components/EmCustomEmoji.vue';
 import EmA from '@/components/EmA.vue';
+import EmMath from '@/components/EmMath.vue';
 
 // eslint-disable-next-line import/no-default-export
 export default createMfmRenderer({
@@ -22,5 +23,6 @@ export default createMfmRenderer({
 		Time: EmTime,
 		Emoji: EmEmoji,
 		CustomEmoji: EmCustomEmoji,
+		Math: EmMath,
 	}),
 });
