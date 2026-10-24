@@ -29,7 +29,7 @@ import { SystemAccountService } from '@/core/SystemAccountService.js';
 import { MetaService } from '@/core/MetaService.js';
 import { extractCustomEmojisFromMfm } from '@/misc/extract-custom-emojis-from-mfm.js';
 import { extractHashtags } from '@/misc/extract-hashtags.js';
-import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import { normalizeTag } from '@/misc/normalize-tag.js';
 
 @Injectable()
 export class SignupService {
@@ -261,7 +261,7 @@ export class SignupService {
 		if (description != null) {
 			const tokens = mfm.parse(description);
 			emojis = emojis.concat(extractCustomEmojisFromMfm(tokens));
-			tags = extractHashtags(tokens).map(tag => normalizeForSearch(tag)).splice(0, 32);
+			tags = extractHashtags(tokens).map(tag => normalizeTag(tag)).splice(0, 32);
 		}
 		let account!: MiUser;
 		let channel!:MiChannel;

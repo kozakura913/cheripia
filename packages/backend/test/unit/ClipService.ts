@@ -35,12 +35,21 @@ describe('ClipService', () => {
 		};
 
 		clipService = new ClipService(
+			{ url: 'http://example.com' } as any,
+			{} as any,
 			clipsRepository as any,
+			{} as any,
+			{} as any,
+			{} as any,
+			{ isLocalUser: () => true } as any,
 			{} as any,
 			{} as any,
 			{} as any,
 			{} as any,
 			globalEventService as any,
+			{} as any,
+			{} as any,
+			{} as any,
 		);
 	});
 

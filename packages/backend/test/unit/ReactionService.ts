@@ -191,6 +191,7 @@ describe('ReactionService', () => {
 				} as never,
 				{ createNotification: vi.fn() } as never,
 				{ update: vi.fn() } as never,
+				{ indexReaction: vi.fn().mockResolvedValue(undefined), unindexReaction: vi.fn().mockResolvedValue(undefined) } as never,
 			);
 
 			await service.create(
