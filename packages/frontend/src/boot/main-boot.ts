@@ -357,27 +357,27 @@ export async function mainBoot() {
 			});
 
 			main.on('unreadMention', () => {
-				updateCurrentAccountPartial({ hasUnreadMentions: true });
+				updateCurrentAccount({ hasUnreadMentions: true });
 			});
 
 			main.on('readAllUnreadMentions', () => {
-				updateCurrentAccountPartial({ hasUnreadMentions: false });
+				updateCurrentAccount({ hasUnreadMentions: false });
 			});
 
 			main.on('unreadSpecifiedNote', () => {
-				updateCurrentAccountPartial({ hasUnreadSpecifiedNotes: true });
+				updateCurrentAccount({ hasUnreadSpecifiedNotes: true });
 			});
 
 			main.on('readAllUnreadSpecifiedNotes', () => {
-				updateCurrentAccountPartial({ hasUnreadSpecifiedNotes: false });
+				updateCurrentAccount({ hasUnreadSpecifiedNotes: false });
 			});
 
 			main.on('readAllAntennas', () => {
-				updateCurrentAccountPartial({ hasUnreadAntenna: false });
+				updateCurrentAccount({ hasUnreadAntenna: false });
 			});
 
 			main.on('unreadAntenna', () => {
-				updateCurrentAccountPartial({ hasUnreadAntenna: true });
+				updateCurrentAccount({ hasUnreadAntenna: true });
 			});
 
 			main.on('newChatMessage', () => {

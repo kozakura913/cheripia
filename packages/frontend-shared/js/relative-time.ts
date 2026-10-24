@@ -37,7 +37,7 @@ export function parseTime(time: Date | string | number | null): number {
  * 「n分前」「n日後」のような相対時刻の文字列を返す
  * @param ago 経過秒数 (未来の場合は負の値)
  */
-export function formatRelativeTime(ago: number, locale: RelativeTimeLocale, enableMarkByDate:boolean): string {
+export function formatRelativeTime(ago: number, locale: RelativeTimeLocale, enableMarkByDate = false): string {
 	if (enableMarkByDate) {
 		return (
 			ago >= 86400 ? locale.ago.daysAgo({ n: Math.round(ago / 86400).toString() }) :

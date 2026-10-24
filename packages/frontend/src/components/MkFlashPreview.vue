@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref, watchEffect } from 'vue';
 import * as Misskey from 'misskey-js';
-import { userName } from '@@/js/user.js';
+import { userName } from '@/filters/user.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { pleaseLogin } from '@/utility/please-login.js';

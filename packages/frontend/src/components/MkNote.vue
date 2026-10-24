@@ -415,7 +415,7 @@ import { useNote } from '@/composables/use-note.js';
 import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/i.js';
-import { notePage } from '@/filters/note.js';
+import { notePage } from '@@/js/note.js';
 import number from '@/filters/number.js';
 import { getNoteSummary } from '@/utility/get-note-summary.js';
 import { isEnabledUrlPreview } from '@/utility/url-preview.js';

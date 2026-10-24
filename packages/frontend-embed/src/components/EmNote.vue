@@ -140,7 +140,6 @@ import EmUserName from '@/components/EmUserName.vue';
 import EmTime from '@/components/EmTime.vue';
 import { userPage } from '@@/js/user.js';
 import { i18n } from '@/i18n.js';
-import { notePage } from '@/utils.js';
 import number from '@/filters/number.js';
 
 function getAppearNote(note: Misskey.entities.Note) {
