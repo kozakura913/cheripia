@@ -408,13 +408,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, ref, useTemplateRef, provide } from 'vue';
 import * as Misskey from 'misskey-js';
 import { concat } from '@@/js/array.js';
+import { userPage } from '@@/js/user.js';
 import type { Ref } from 'vue';
 import type { Keymap } from '@/utility/hotkey.js';
 import { useNote } from '@/composables/use-note.js';
 import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/i.js';
-import { userPage } from '@/filters/user.js';
 import { notePage } from '@/filters/note.js';
 import number from '@/filters/number.js';
 import { getNoteSummary } from '@/utility/get-note-summary.js';

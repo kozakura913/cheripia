@@ -4629,6 +4629,8 @@ export type components = {
             autoSensitive: boolean;
             carefulBot: boolean;
             autoAcceptFollowed: boolean;
+            followApprovalLocalSeconds: number | null;
+            followApprovalRemoteSeconds: number | null;
             noCrawle: boolean;
             preventAiLearning: boolean;
             isExplorable: boolean;
@@ -7334,7 +7336,36 @@ export interface operations {
         requestBody: {
             content: {
                 'application/json': {
+<<<<<<< HEAD
                     email: string;
+=======
+                    title: string;
+                    text: string;
+                    imageUrl: string | null;
+                    /**
+                     * @default info
+                     * @enum {string}
+                     */
+                    icon?: 'info' | 'warning' | 'error' | 'success';
+                    /**
+                     * @default normal
+                     * @enum {string}
+                     */
+                    display?: 'normal' | 'banner' | 'dialog';
+                    /** @default false */
+                    forExistingUsers?: boolean;
+                    /** @default false */
+                    silence?: boolean;
+                    /** @default false */
+                    needConfirmationToRead?: boolean;
+                    /**
+                     * Format: misskey:id
+                     * @default null
+                     */
+                    userId?: string | null;
+                    /** @default null */
+                    autoArchiveAt?: number | null;
+>>>>>>> 4840fa6d576128ba916ba69169258ca177d40faf
                 };
             };
         };
@@ -7556,7 +7587,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+<<<<<<< HEAD
                     'application/json': components['schemas']['Ad'][];
+=======
+                    'application/json': {
+                        /**
+                         * Format: id
+                         * @example xxxxxxxxxx
+                         */
+                        id: string;
+                        /** Format: date-time */
+                        createdAt: string;
+                        /** Format: date-time */
+                        updatedAt: string | null;
+                        text: string;
+                        title: string;
+                        /** @enum {string} */
+                        icon: 'info' | 'warning' | 'error' | 'success';
+                        /** @enum {string} */
+                        display: 'normal' | 'banner' | 'dialog';
+                        isActive: boolean;
+                        /** Format: date-time */
+                        autoArchiveAt: string | null;
+                        forExistingUsers: boolean;
+                        silence: boolean;
+                        needConfirmationToRead: boolean;
+                        userId: string | null;
+                        imageUrl: string | null;
+                        reads: number;
+                    }[];
+>>>>>>> 4840fa6d576128ba916ba69169258ca177d40faf
                 };
             };
             /** @description Client error */
@@ -7612,6 +7672,7 @@ export interface operations {
                 'application/json': {
                     /** Format: misskey:id */
                     id: string;
+<<<<<<< HEAD
                     memo?: string;
                     url?: string;
                     imageUrl?: string;
@@ -7622,6 +7683,20 @@ export interface operations {
                     startsAt?: number;
                     dayOfWeek?: number;
                     isSensitive?: boolean;
+=======
+                    title?: string;
+                    text?: string;
+                    imageUrl?: string | null;
+                    /** @enum {string} */
+                    icon?: 'info' | 'warning' | 'error' | 'success';
+                    /** @enum {string} */
+                    display?: 'normal' | 'banner' | 'dialog';
+                    forExistingUsers?: boolean;
+                    silence?: boolean;
+                    needConfirmationToRead?: boolean;
+                    isActive?: boolean;
+                    autoArchiveAt?: number | null;
+>>>>>>> 4840fa6d576128ba916ba69169258ca177d40faf
                 };
             };
         };
@@ -28899,7 +28974,220 @@ export interface operations {
         requestBody: {
             content: {
                 'application/json': {
+<<<<<<< HEAD
                     moveToAccount: string;
+=======
+                    name?: string | null;
+                    description?: string | null;
+                    followedMessage?: string | null;
+                    location?: string | null;
+                    birthday?: string | null;
+                    /** @enum {string|null} */
+                    lang?: null | 'ach' | 'ady' | 'af' | 'af-NA' | 'af-ZA' | 'ak' | 'ar' | 'ar-AR' | 'ar-MA' | 'ar-SA' | 'ay-BO' | 'az' | 'az-AZ' | 'be-BY' | 'bg' | 'bg-BG' | 'bn' | 'bn-IN' | 'bn-BD' | 'br' | 'bs-BA' | 'ca' | 'ca-ES' | 'cak' | 'ck-US' | 'cs' | 'cs-CZ' | 'cy' | 'cy-GB' | 'da' | 'da-DK' | 'de' | 'de-AT' | 'de-DE' | 'de-CH' | 'dsb' | 'el' | 'el-GR' | 'en' | 'en-GB' | 'en-AU' | 'en-CA' | 'en-IE' | 'en-IN' | 'en-PI' | 'en-SG' | 'en-UD' | 'en-US' | 'en-ZA' | 'en@pirate' | 'eo' | 'eo-EO' | 'es' | 'es-AR' | 'es-419' | 'es-CL' | 'es-CO' | 'es-EC' | 'es-ES' | 'es-LA' | 'es-NI' | 'es-MX' | 'es-US' | 'es-VE' | 'et' | 'et-EE' | 'eu' | 'eu-ES' | 'fa' | 'fa-IR' | 'fb-LT' | 'ff' | 'fi' | 'fi-FI' | 'fo' | 'fo-FO' | 'fr' | 'fr-CA' | 'fr-FR' | 'fr-BE' | 'fr-CH' | 'fy-NL' | 'ga' | 'ga-IE' | 'gd' | 'gl' | 'gl-ES' | 'gn-PY' | 'gu-IN' | 'gv' | 'gx-GR' | 'he' | 'he-IL' | 'hi' | 'hi-IN' | 'hr' | 'hr-HR' | 'hsb' | 'ht' | 'hu' | 'hu-HU' | 'hy' | 'hy-AM' | 'id' | 'id-ID' | 'is' | 'is-IS' | 'it' | 'it-IT' | 'ja' | 'ja-JP' | 'jv-ID' | 'ka-GE' | 'kk-KZ' | 'km' | 'kl' | 'km-KH' | 'kab' | 'kn' | 'kn-IN' | 'ko' | 'ko-KR' | 'ku-TR' | 'kw' | 'la' | 'la-VA' | 'lb' | 'li-NL' | 'lt' | 'lt-LT' | 'lv' | 'lv-LV' | 'mai' | 'mg-MG' | 'mk' | 'mk-MK' | 'ml' | 'ml-IN' | 'mn-MN' | 'mr' | 'mr-IN' | 'ms' | 'ms-MY' | 'mt' | 'mt-MT' | 'my' | 'no' | 'nb' | 'nb-NO' | 'ne' | 'ne-NP' | 'nl' | 'nl-BE' | 'nl-NL' | 'nn-NO' | 'oc' | 'or-IN' | 'pa' | 'pa-IN' | 'pl' | 'pl-PL' | 'ps-AF' | 'pt' | 'pt-BR' | 'pt-PT' | 'qu-PE' | 'rm-CH' | 'ro' | 'ro-RO' | 'ru' | 'ru-RU' | 'sa-IN' | 'se-NO' | 'sh' | 'si-LK' | 'sk' | 'sk-SK' | 'sl' | 'sl-SI' | 'so-SO' | 'sq' | 'sq-AL' | 'sr' | 'sr-RS' | 'su' | 'sv' | 'sv-SE' | 'sw' | 'sw-KE' | 'ta' | 'ta-IN' | 'te' | 'te-IN' | 'tg' | 'tg-TJ' | 'th' | 'th-TH' | 'fil' | 'tlh' | 'tr' | 'tr-TR' | 'tt-RU' | 'uk' | 'uk-UA' | 'ur' | 'ur-PK' | 'uz' | 'uz-UZ' | 'vi' | 'vi-VN' | 'xh-ZA' | 'yi' | 'yi-DE' | 'zh' | 'zh-Hans' | 'zh-Hant' | 'zh-CN' | 'zh-HK' | 'zh-SG' | 'zh-TW' | 'zu-ZA';
+                    /** Format: misskey:id */
+                    avatarId?: string | null;
+                    avatarDecorations?: {
+                        /** Format: misskey:id */
+                        id: string;
+                        angle?: number | null;
+                        flipH?: boolean | null;
+                        offsetX?: number | null;
+                        offsetY?: number | null;
+                    }[];
+                    /** Format: misskey:id */
+                    bannerId?: string | null;
+                    fields?: {
+                        name: string;
+                        value: string;
+                    }[];
+                    isLocked?: boolean;
+                    isExplorable?: boolean;
+                    hideOnlineStatus?: boolean;
+                    publicReactions?: boolean;
+                    carefulBot?: boolean;
+                    autoAcceptFollowed?: boolean;
+                    followApprovalLocalSeconds?: number | null;
+                    followApprovalRemoteSeconds?: number | null;
+                    noCrawle?: boolean;
+                    preventAiLearning?: boolean;
+                    requireSigninToViewContents?: boolean;
+                    makeNotesFollowersOnlyBefore?: number | null;
+                    makeNotesHiddenBefore?: number | null;
+                    isBot?: boolean;
+                    isCat?: boolean;
+                    injectFeaturedNote?: boolean;
+                    receiveAnnouncementEmail?: boolean;
+                    alwaysMarkNsfw?: boolean;
+                    autoSensitive?: boolean;
+                    /** @enum {string} */
+                    followingVisibility?: 'public' | 'followers' | 'private';
+                    /** @enum {string} */
+                    followersVisibility?: 'public' | 'followers' | 'private';
+                    /** @enum {string} */
+                    chatScope?: 'everyone' | 'followers' | 'following' | 'mutual' | 'none';
+                    /** Format: misskey:id */
+                    pinnedPageId?: string | null;
+                    mutedWords?: (string[] | string)[];
+                    hardMutedWords?: (string[] | string)[];
+                    mutedInstances?: string[];
+                    notificationRecieveConfig?: {
+                        note?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        follow?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        mention?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        reply?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        renote?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        quote?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        reaction?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        pollEnded?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        scheduledNotePosted?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        scheduledNotePostFailed?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        receiveFollowRequest?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        followRequestAccepted?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        roleAssigned?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        chatRoomInvitationReceived?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        achievementEarned?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        app?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                        test?: {
+                            /** @enum {string} */
+                            type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+                        } | {
+                            /** @enum {string} */
+                            type: 'list';
+                            /** Format: misskey:id */
+                            userListId: string;
+                        };
+                    };
+                    emailNotificationTypes?: string[];
+                    alsoKnownAs?: string[];
+>>>>>>> 4840fa6d576128ba916ba69169258ca177d40faf
                 };
             };
         };
