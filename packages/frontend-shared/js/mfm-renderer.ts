@@ -436,6 +436,9 @@ export function createMfmRenderer<P extends MfmBaseProps = MfmBaseProps>(config:
 						host: (token.props.host == null && props.author && props.author.host != null ? props.author.host : token.props.host) ?? host,
 						username: token.props.username,
 						...linkProps,
+						onClick: supportsNavigationBehavior ? (ev: MouseEvent): void => {
+							ev.stopPropagation();
+						} : undefined,
 					})];
 				}
 
