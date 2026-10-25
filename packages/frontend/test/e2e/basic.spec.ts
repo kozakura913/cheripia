@@ -195,7 +195,7 @@ test.describe('After user signed in', () => {
 		await page.getByTestId('user-setup-continue').click();
 
 		// 完了
-		await page.getByTestId('user-setup-close').click();
+		await page.getByTestId('user-setup-continue').click();
 	});
 });
 
