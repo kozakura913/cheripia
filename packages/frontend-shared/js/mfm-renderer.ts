@@ -42,6 +42,8 @@ type MfmOptionalProps = {
 	enableEmojiMenu?: boolean;
 	enableEmojiMenuReaction?: boolean;
 	linkNavigationBehavior?: unknown;
+	/** ノート単位のアニメーション MFM 上書き (未指定なら全体設定) */
+	enableAnimatedMfm?: boolean | null;
 };
 
 export type MfmEvents = {
@@ -83,12 +85,15 @@ export type MfmRendererConfig = {
 		navigationBehavior?: boolean;
 		/** Emoji / CustomEmoji の `menu` / `menuReaction` */
 		emojiMenu?: boolean;
+		/** Url / Link に author の host を渡す */
+		urlHost?: boolean;
 	};
 };
 
 export function createMfmRenderer<P extends MfmBaseProps = MfmBaseProps>(config: MfmRendererConfig) {
 	const supportsNavigationBehavior = config.supports?.navigationBehavior ?? false;
 	const supportsEmojiMenu = config.supports?.emojiMenu ?? false;
+	const supportsUrlHost = config.supports?.urlHost ?? false;
 
 	return function (_props: P, { emit }: { emit: SetupContext<MfmEvents>['emit'] }) {
 		// こうしたいところだけど functional component 内では provide は使えない
@@ -117,9 +122,10 @@ export function createMfmRenderer<P extends MfmBaseProps = MfmBaseProps>(config:
 		};
 
 		const { advancedMfm, animatedMfm } = config.getOptions?.() ?? { advancedMfm: true, animatedMfm: true };
-		const useAnim = advancedMfm && animatedMfm;
+		const useAnim = props.enableAnimatedMfm ?? (advancedMfm && animatedMfm);
 
 		const linkProps = supportsNavigationBehavior ? { navigationBehavior: props.linkNavigationBehavior } : {};
+		const urlHostProps = supportsUrlHost ? { host: props.author?.host } : {};
 		const hashtagProps = supportsNavigationBehavior ? { behavior: props.linkNavigationBehavior } : {};
 		const emojiMenuProps = supportsEmojiMenu ? { menu: props.enableEmojiMenu, menuReaction: props.enableEmojiMenuReaction } : {};
 
@@ -408,6 +414,7 @@ export function createMfmRenderer<P extends MfmBaseProps = MfmBaseProps>(config:
 						url: token.props.url,
 						rel: 'nofollow noopener',
 						...linkProps,
+						...urlHostProps,
 					})];
 				}
 
@@ -419,6 +426,7 @@ export function createMfmRenderer<P extends MfmBaseProps = MfmBaseProps>(config:
 						url: token.props.url,
 						rel: 'nofollow noopener',
 						...linkProps,
+						...urlHostProps,
 					}, { default: () => linkChildren })];
 				}
 

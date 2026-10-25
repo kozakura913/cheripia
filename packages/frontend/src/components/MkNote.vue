@@ -217,7 +217,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:enableEmojiMenu="!!$i"
 						:enableEmojiMenuReaction="!!$i"
 						class="_selectable"
-						:enableAnimatedMfm="enableAnimatedMfm"
+						:enableAnimatedMfm="$i ? undefined : enableAnimatedMfm"
 					/>
 					<div v-if="prefer.s.showTranslateButtonInNote && $i && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i.policies.canUseTranslator && (appearNote.text || appearNote.poll) && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
 						<button v-if="translateStatus === 'none'" ref="translateButton" class="_button" @click.stop="translate(false)">{{ i18n.ts.translateNote }}</button>

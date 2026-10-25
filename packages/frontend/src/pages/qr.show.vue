@@ -30,7 +30,7 @@ import tinycolor from 'tinycolor2';
 import QRCodeStyling from 'qr-code-styling';
 import { computed, ref, shallowRef, watch, onMounted, onUnmounted, useTemplateRef } from 'vue';
 import { url, host } from '@@/js/config.js';
-import { userPage, userName } from '@@/js/user.js';
+import { userPage, userName } from '@/filters/user.js';
 import type { Directive } from 'vue';
 import { instance } from '@/instance.js';
 import { ensureSignin } from '@/i.js';

@@ -79,33 +79,45 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 			<template v-else-if="page === 3">
 				<div style="height: 100cqh; overflow: auto;">
-					<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
-						<XFontSize/>
-						<div class="_buttonsCenter" style="margin-top: 16px;">
-							<MkButton rounded data-testid="user-setup-back" @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate data-testid="user-setup-continue" @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+					<div :class="$style.pageRoot">
+						<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;" :class="$style.pageMain">
+							<XFontSize/>
+						</div>
+						<div :class="$style.pageFooter">
+							<div class="_buttonsCenter">
+								<MkButton rounded data-testid="user-setup-back" @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-testid="user-setup-continue" @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+							</div>
 						</div>
 					</div>
 				</div>
 			</template>
 			<template v-else-if="page === 4">
 				<div style="height: 100cqh; overflow: auto;">
-					<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
-						<XBlur/>
-						<div class="_buttonsCenter" style="margin-top: 16px;">
-							<MkButton rounded data-testid="user-setup-back" @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate data-testid="user-setup-continue" @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+					<div :class="$style.pageRoot">
+						<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;" :class="$style.pageMain">
+							<XBlur/>
+						</div>
+						<div :class="$style.pageFooter">
+							<div class="_buttonsCenter">
+								<MkButton rounded data-testid="user-setup-back" @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-testid="user-setup-continue" @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+							</div>
 						</div>
 					</div>
 				</div>
 			</template>
 			<template v-else-if="page === 5">
 				<div style="height: 100cqh; overflow: auto;">
-					<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
-						<XMfm/>
-						<div class="_buttonsCenter" style="margin-top: 16px;">
-							<MkButton rounded data-testid="user-setup-back" @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-							<MkButton primary rounded gradate data-testid="user-setup-continue" @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+					<div :class="$style.pageRoot">
+						<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;" :class="$style.pageMain">
+							<XMfm/>
+						</div>
+						<div :class="$style.pageFooter">
+							<div class="_buttonsCenter">
+								<MkButton rounded data-testid="user-setup-back" @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
+								<MkButton primary rounded gradate data-testid="user-setup-continue" @click="page++">{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -150,11 +162,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<div style="font-size: 120%;">{{ i18n.ts._initialAccountSetting.initialAccountSettingCompleted }}</div>
 							<div>{{ i18n.tsx._initialAccountSetting.youCanContinueTutorial({ name: instance.name ?? host }) }}</div>
 							<div class="_buttonsCenter" style="margin-top: 16px;">
-								<MkButton rounded primary gradate data-testid="user-setup-continue" @click="launchTutorial()">{{ i18n.ts._initialAccountSetting.startTutorial }} <i class="ti ti-arrow-right"></i></MkButton>
+								<MkButton rounded primary gradate data-testid="user-setup-start-tutorial" @click="launchTutorial()">{{ i18n.ts._initialAccountSetting.startTutorial }} <i class="ti ti-arrow-right"></i></MkButton>
 							</div>
 							<div class="_buttonsCenter">
 								<MkButton rounded data-testid="user-setup-back" @click="page--"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-								<MkButton rounded primary data-testid="user-setup-continue" @click="setupComplete()">{{ i18n.ts.close }}</MkButton>
+								<MkButton rounded primary data-testid="user-setup-close" @click="setupComplete()">{{ i18n.ts.close }}</MkButton>
 							</div>
 						</div>
 					</div>

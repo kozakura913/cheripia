@@ -24,6 +24,7 @@ type MfmProps = MfmBaseProps & {
 	enableEmojiMenu?: boolean;
 	enableEmojiMenuReaction?: boolean;
 	linkNavigationBehavior?: MkABehavior;
+	enableAnimatedMfm?: boolean | null;
 };
 
 // eslint-disable-next-line import/no-default-export
@@ -49,5 +50,6 @@ export default createMfmRenderer<MfmProps>({
 	supports: {
 		navigationBehavior: true,
 		emojiMenu: true,
+		urlHost: true,
 	},
 });
