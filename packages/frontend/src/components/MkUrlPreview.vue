@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		></iframe>
 	</div>
 	<div :class="$style.action">
-		<MkButton :small="true" inline @click.stop="postExpanded = false">
+		<MkButton :small="true" inline @click.stop="setTweetExpanded(false)">
 			<i class="ti ti-x"></i> {{ i18n.ts.close }}
 		</MkButton>
 	</div>
@@ -79,7 +79,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</component>
 	<template v-if="showActions">
 		<div v-if="tweetId" :class="$style.action">
-			<MkButton :small="true" inline @click.stop="postExpanded = true">
+			<MkButton :small="true" inline @click.stop="setTweetExpanded(true)">
 				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandPost }}
 			</MkButton>
 		</div>
@@ -101,7 +101,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onDeactivated, onUnmounted, ref } from 'vue';
+import { computed, defineAsyncComponent, onActivated, onDeactivated, onUnmounted, ref } from 'vue';
 import { url as local } from '@@/js/config.js';
 import { versatileLang } from '@@/js/intl-const.js';
 import { maybeMakeRelative } from '@@/js/url.js';
@@ -157,7 +157,10 @@ const icon = computed(() => summalyResult.value?.icon ?? null);
 const sitename = computed(() => summalyResult.value?.sitename ?? null);
 const sensitive = computed(() => summalyResult.value?.sensitive ?? false);
 const player = computed(() => summalyResult.value?.player ?? { url: null, width: null, height: null });
-const playerEnabled = ref(false);
+const playerEnabled = ref(false); // 初期値はsummaly取り終わったあとに設定
+const tweetId = ref<string | null>(null);
+const tweetExpanded = ref(false); // 初期値はsummaly取り終わったあとに設定
+let tweetExpandedByUser = false;
 const embedId = `embed${Math.random().toString().replace(/\D/, '')}`;
 
 const postExpanded = ref(props.detail);
@@ -170,8 +173,14 @@ const bskyDid = ref<string | null>(null);
 const bskyPostRecordKey = ref<string | null>(null);
 
 const unknownUrl = ref(false);
+let isDeactivated = false;
+
+onActivated(() => {
+	isDeactivated = false;
+});
 
 onDeactivated(() => {
+	isDeactivated = true;
 	playerEnabled.value = false;
 });
 
@@ -211,21 +220,45 @@ window.fetch(`${instance.urlPreviewEndpoint}?url=${encodeURIComponent(requestUrl
 
 		return res.json();
 	})
+	.catch(err => {
+		if (_DEV_) {
+			console.warn('Failed to fetch url preview', err);
+		}
+		return null;
+	})
 	.then((info: SummalyResult | null) => {
 		if (!info || info.url == null) {
 			fetching.value = false;
 			unknownUrl.value = true;
+			autoExpandTweet();
 			return;
 		}
 
 		fetching.value = false;
 		unknownUrl.value = false;
+
 		summalyResult.value = {
 			...info,
 			thumbnail: getProxiedImageUrlNullable(info.thumbnail, 'avatar', true),
 			icon: getProxiedImageUrlNullable(info.icon, 'emoji', true),
 		};
+
+		if (!info.sensitive) {
+			autoExpandTweet();
+			if (!isDeactivated) {
+				playerEnabled.value = (props.showActions && prefer.s.expandUrlPreviewAutomatically);
+			}
+		}
 	});
+
+function setTweetExpanded(expanded: boolean) {
+	tweetExpandedByUser = true;
+	tweetExpanded.value = expanded;
+}
+
+function autoExpandTweet() {
+	if (props.detail && !tweetExpandedByUser) tweetExpanded.value = true;
+}
 
 async function openBskyEmbed() {
 	if (bskyHandleOrDid.value == null || bskyPostRecordKey.value == null) return;
@@ -242,6 +275,15 @@ async function openBskyEmbed() {
 		}
 	}
 	postExpanded.value = true;
+}
+
+function adjustTweetHeight(message: MessageEvent) {
+	if (message.origin !== 'https://platform.twitter.com') return;
+	const embed = message.data?.['twttr.embed'];
+	if (embed?.method !== 'twttr.private.resize') return;
+	if (embed?.id !== embedId) return;
+	const height = embed?.params[0]?.height;
+	if (height) tweetHeight.value = height;
 }
 
 function openPlayer(): void {
