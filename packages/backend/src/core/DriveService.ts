@@ -747,11 +747,13 @@ export class DriveService {
 			throw new IdentifiableError('b9adda75-abe9-4c6d-bf12-b5575833960d', 'No such folder.');
 		}
 
+		// Cheripia: userがnullのときも重複排除する
 		if (!force) {
 		// Check if there is a file with the same hash
 			const matched = await this.driveFilesRepository.findOneBy({
 				md5: info.md5,
-				userId: user ? user.id : undefined,
+				//Cheripia: undefinedを渡すとuserId条件自体を無視するためIsNullでシステムユーザーに制限する
+				userId: user ? user.id : IsNull(),
 			});
 
 			if (matched) {
