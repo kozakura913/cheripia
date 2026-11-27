@@ -312,7 +312,11 @@ async function openBskyEmbed() {
 					bskyEmbedUnavailable.value = true;
 				}
 			} else {
+				// Cheripia: OK以外のレスポンスでは展開ボタンを無効化するための失敗を記録し、切り分け用に開発ログを残す
 				bskyEmbedUnavailable.value = true;
+				if (_DEV_) {
+					console.warn(`[HTTP${bskyApiRes.status}] Failed to resolve bsky handle`);
+				}
 			}
 		} catch (err) {
 			bskyEmbedUnavailable.value = true;
