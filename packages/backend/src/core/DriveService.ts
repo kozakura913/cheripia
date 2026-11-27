@@ -752,7 +752,7 @@ export class DriveService {
 		// Check if there is a file with the same hash
 			const matched = await this.driveFilesRepository.findOneBy({
 				md5: info.md5,
-				//Cheripia: undefinedを渡すとuserId条件自体を無視するためIsNullでシステムユーザーに制限する
+				// Cheripia: undefinedを渡すとuserId条件自体を無視するためIsNullでシステムユーザーに制限する
 				userId: user ? user.id : IsNull(),
 			});
 
