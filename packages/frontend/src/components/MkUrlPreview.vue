@@ -86,7 +86,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandPost }}
 			</MkButton>
 		</div>
-		<div v-if="bskyPostRecordKey" :class="$style.action">
+		<div v-if="bskyPostRecordKey && !bskyEmbedUnavailable" :class="$style.action">
 			<MkButton :small="true" inline @click.stop="setBskyExpanded(true)">
 				<i class="ti ti-brand-bluesky"></i> {{ i18n.ts.expandPost }}
 			</MkButton>
@@ -180,6 +180,8 @@ const bskyPostRecordKey = ref<string | null>(null);
 const bskyExpanded = ref(false);
 const bskyHeight = ref(150);
 let bskyExpandedByUser = false;
+// Cheripia: Blueskyの埋め込み解決失敗（non-okレスポンス、did欠落、ネットワークエラーなど）を記録するステート
+const bskyEmbedUnavailable = ref(false);
 
 onActivated(() => {
 	isDeactivated = false;
@@ -200,8 +202,13 @@ if (requestUrl.hostname === 'twitter.com' || requestUrl.hostname === 'mobile.twi
 if (requestUrl.hostname === 'bsky.app') {
 	const bskyPostPageUrl = requestUrl.pathname.slice(1).split('/');
 	if (bskyPostPageUrl[0] === 'profile' && bskyPostPageUrl[1] && bskyPostPageUrl[2] === 'post' && bskyPostPageUrl[3]) {
-		bskyHandleOrDid.value = bskyPostPageUrl[1];
-		bskyPostRecordKey.value = bskyPostPageUrl[3];
+		// Cheripia: 外部の投稿作成者が完全に制御するURL成分を、埋め込み展開で使用される前にホワイトリストで検証する
+		const validHandle = /^[a-zA-Z0-9._-]+$/.test(bskyPostPageUrl[1]) || /^did:[a-z0-9]+:[a-zA-Z0-9._:%-]+$/.test(bskyPostPageUrl[1]);
+		const validRecordKey = /^[a-zA-Z0-9_-]+$/.test(bskyPostPageUrl[3]);
+		if (validHandle && validRecordKey) {
+			bskyHandleOrDid.value = bskyPostPageUrl[1];
+			bskyPostRecordKey.value = bskyPostPageUrl[3];
+		}
 	}
 }
 
@@ -287,19 +294,28 @@ function autoExpandBsky() {
 
 async function openBskyEmbed() {
 	if (bskyHandleOrDid.value == null || bskyPostRecordKey.value == null) return;
-	if (bskyDid.value != null || bskyDidResolving) return;
+	// Cheripia: 解決失敗が記録済みならfetchを再発行しない
+	if (bskyDid.value != null || bskyDidResolving || bskyEmbedUnavailable.value) return;
 	if (bskyHandleOrDid.value.startsWith('did:')) {
 		bskyDid.value = bskyHandleOrDid.value;
 	} else {
 		// handleで来ている場合はdidに変換
 		bskyDidResolving = true;
 		try {
-			const bskyApiRes = await window.fetch(`https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle?handle=${bskyHandleOrDid.value}`);
+			const bskyApiRes = await window.fetch(`https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle?handle=${encodeURIComponent(bskyHandleOrDid.value)}`);
 			if (bskyApiRes.ok) {
-				const bskyApiData = await bskyApiRes.json() as { did: string };
-				bskyDid.value = bskyApiData.did;
+				const bskyApiData = await bskyApiRes.json() as { did?: string };
+				// Cheripia: API応答のdidもW3C DID形式を検証してからiframe展開に使う
+				if (typeof bskyApiData.did === 'string' && /^did:[a-z0-9]+:[a-zA-Z0-9._:%-]+$/.test(bskyApiData.did)) {
+					bskyDid.value = bskyApiData.did;
+				} else {
+					bskyEmbedUnavailable.value = true;
+				}
+			} else {
+				bskyEmbedUnavailable.value = true;
 			}
 		} catch (err) {
+			bskyEmbedUnavailable.value = true;
 			if (_DEV_) {
 				console.warn('Failed to resolve bsky handle', err);
 			}
